@@ -1,0 +1,73 @@
+---
+title: "CELL"
+author: "hamed obeidat"
+date: "2026-02-24"
+output:
+  word_document: default
+  pdf_document: default
+---
+A study on the cell life cycle: A random sample of cells was taken to measure the effect of external factors such as temperature and carbohydrate consumption rate on the cell life cycle, and to study the differences between these factors.
+
+```{r echo=FALSE}
+setwd("C:/Users/BAB AL SAFA/OneDrive/Desktop/New folder (2)")
+data=read.table("Ch7Ta9.DAT")
+data
+names(data)=c("life","chrate","temp")
+data$temp=factor(data$temp)
+sum=summary(data)
+library(knitr)
+kable(sum,caption = "The Descriptive Statistic for Data ")
+```
+Table two:
+shows that the mean value of the variable (life) is equal
+to 172 and And greater value is 288 and Smallest value is 49 , The results show a significant deviation in the values, indicating a lack of homogeneity,In terms of chrate carbohydrate intake, it appears that carbohydrate consumption values are homogeneous, with the highest value reaching [a certain level] is 1.4 and  lowest levels is 0.6 , The number of cells at 10 degrees Celsius was 3, the number of cells at 20 degrees Celsius was 5, and the number of cells at 30 degrees Celsius was 3.
+
+
+```{r echo=FALSE}
+names(data)=c("life","chrate","temp")
+boxplot(life~temp,data = data)
+```
+The graph shows that the average cell lifespan at 30 degrees is greater than  at 10 and 20 degrees.
+
+Inference statistic: 
+
+```{r echo=FALSE}
+library(rstatix)
+ancova=anova_test(life~temp+chrate,data=data)
+library(knitr)
+kable(ancova,caption = "ANOVA Table")
+```
+The results showed that there were statistically significant differences amounting to a value p-value of chrate is 0.004 less than 
+This suggests that carbohydrate levels had an effect on cell life
+It has an effect on modeling,The results showed that there were statistically significant differences between the average temperatures, where the value reached p-value is 0.003 less than 0.05
+
+
+Check the assumption:
+
+
+
+```{r echo=FALSE}
+library(ggpubr)
+ggscatter(data,x="chrate",y="life",
+color="temp",add="reg.line")+
+stat_regline_equation(aes(label=
+paste(..eq.label..,..rr.label..,
+sep="~~~~"),color=temp))
+```
+The diagram showed that there is a strong negative linear relationship between cell life and carbohydrate content at 10°C
+The carbohydrate content explained 0.98% of the variation in cell life, meaning it had a significant impact,At a temperature of 20, the model interprets its ratio is 0.82 This indicates that the rate of carbohydrate consumption explains 0.82% of cell life,
+At a temperature of 30 degrees, the rate of carbohydrate consumption was interpreted as follows is 0.89.
+
+
+```{r echo=FALSE}
+par(mfrow=c(2,2))
+plot(ancova)
+```
+
+Residuals vs fitted plot showed random scatter,indicating linearity and constant variance assumptions were reasonably met,
+The Normal Q-Q plot showed points far away the line ,not normal distrهbution 
+Scale-location homogeneous because the points are  distributed horizontally.
+Residuals vs leverage plot showed that the points are inside shape ,
+no influential points .
+
+

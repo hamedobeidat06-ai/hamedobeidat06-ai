@@ -1,0 +1,113 @@
+---
+title: "TEACHING METHOD"
+author: "HAMED OBEIDAT"
+date: "2026-02-23"
+output: pdf_document
+---
+His study aims to compare three teaching
+methods—traditional, online, and blended (mixed)
+instruction—to determine whether the method of instruction
+significantly affects students’ posttest students are randomly assigned to one of the three teaching
+methods. All students complete the same final examination at
+the end of the course. Pre-test scores.
+
+
+```{r echo=FALSE}
+setwd("C:/Users/BAB AL SAFA/OneDrive/Desktop/New folder (2)")
+data2=read.csv("anxiety.csv",header = TRUE,sep = ",")
+library(knitr)
+kable(data2,caption = "The number of students for each group")
+```
+Table one :
+Shows the number of students in each group and the results of the pre- and post-exams.
+
+
+
+Descriptive statistic : 
+
+```{r echo=FALSE}
+data2$group=factor(data2$group)
+des=summary(data2[,-c(1,2)])
+library(knitr)
+kable(des,caption = "Descriptive statistic for students score")
+```
+The number of students in the traditional method group is 15, which is equal to the number of students in both the online and blended. methods The average student score on the pre-exam was 16.92, with the highest score being 19.8 and the lowest 13.7. The results show a significant disparity, indicating that student scores are not uniform and are far apart,The average student score on the post-test was 15.24
+ with the highest score being 19.40 and the lowest 11. The results show that the students' scores were very close and the variation in scores was minimal.
+ 
+ 
+```{r echo=FALSE}
+attach(data2)
+se=boxplot(posttest~group)
+```
+The mean of group1 is greater than mean of group2 and group3 
+The first group achieved the highest marks compared to the second and third groups. 
+ 
+ 
+ 
+ 
+ 
+
+Fitted model: 
+ 
+```{r echo=FALSE}
+attach(data2)
+fitt_model=lm(	posttest~pretest+group,data = data2)
+fitt_model
+summary(fitt_model)
+```
+The results showed that the pre-test had an impact and relationship with the post-test, where the value reached p-value=< 2e-16 less than 0.05 ,The value of B1^=1.02775,The value of B1^ indicates that for every one increase in the pre-test score, the average score of the post-test will be.1.02775 Ceteris paribus,When transitioning from traditional teaching methods to online learning, the  average  score on the post-test will be -0.64112 , When transitioning from traditional to blended teaching methods, the average score on the post-test equals -2.98463.
+The value was reached 0.95 This indicates that the model explained 0.95% of the variance in post-test scores, suggesting that the teaching methods and the pre-test were effective.
+
+Diagnostics:
+
+```{r echo=FALSE}
+par(mfrow=c(2,2))
+plot(fitt_model)
+```
+Residuals vs fitted plot showed random scatter, indicating linearity and constant variance assumptions were reasonably met
+The Normal Q-Q plot showed points colse the line , normal distribution
+Scale-location homogeneous because the points are  distributed horizontally.
+Residuals vs leverage plot showed that the points are inside shape ,
+no influential points .
+
+```{r echo=FALSE}
+fitt_model2=lm( posttest ~ pretest + group+pretest:group,data = data2)
+fitt_model2
+summary(fitt_model2)
+```
+The model explains 0.9569% of the variance in the dependent variable an exceptionally high explanatory power .
+Adjusted R-squared=0.9618
+The model remains strong even after adjusting for the number of predictors 
+Estimate=1.012,p-value=0.566
+< 2e-16 is significant for every one-unit increase in pretest The average score on the post-test is 1.012, all other factors being equal.
+Estimate=-1.37,p-value=0.419
+no statistically significant from the reference group 1 in post test
+score after controlling for post test
+When switching from the traditional method to online lower on average decreases by -1.37, all other factors being equal.
+
+Estimate=-2.93,p-value=0.125
+no statistically significant from the reference group 1 in post test
+score after controlling for post test
+
+pretest:group2,Estimate=0.04,p-value=0.662 and group3:pretest,p-value=0.978
+no relationship between pretest and post test does not vary by group 
+pretest is the only statistically significant predictor of post test performance .group membership (gro2 and gro3) and interaction do not significant affect post test scores
+
+
+```{r echo=FALSE}
+par(mfrow=c(2,2))
+plot(fitt_model2)
+```
+Residuals vs fitted plot showed random scatter, indicating linearity and constant variance assumptions were reasonably met
+The Normal Q-Q plot showed points colse the line , normal distribution
+Scale-location homogeneous because the points are  distributed horizontally.
+Residuals vs leverage plot showed that the points are inside shape ,
+no influential points .
+
+```{r echo=FALSE}
+anova(fitt_model,fitt_model2)
+```
+The comparison of the two models shows that adding the interaction between pretest and group does not improve the model
+The p-value=0.8815 indicates that the interaction effect is not statistically significant therefore,the relationship between pretest and post test does not differ across groups and the simpler model without the interaction.
+
+
