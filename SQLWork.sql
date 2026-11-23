@@ -1,0 +1,5 @@
+SELECT TOP 10 *FROM Customers 
+SELECT TOP 10 *FROM Inventory
+SELECT TOP 10 *FROM Pharmacies
+SELECT TOP 10 *FROM Products
+SELECT TOP 10 *FROM Sales
